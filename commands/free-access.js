@@ -197,7 +197,7 @@ module.exports = {
                         `Hey <@${discordUserId}>, you don’t meet the **free access requirements**. Please follow the steps below to proceed:\n\n` +
                         `**🔍 Current Status:**\n` +
                         `> **Display Name:** \`${displayName}\`\n` +
-                        `> ❌ Must start with \`EOK_\`\n\n` +
+                        `> ❌ Must start with \`EOK\`\n\n` +
                         `**✅ How to Get Free Access:**\n` +
                         `1️⃣ Change your Roblox **display name** to start with \`EOK_\`\n` +
                         `2️⃣ Wear one of the **required shirts**\n> IDs: \`${requiredShirtIds.join(', ')}\`\n` +
@@ -319,7 +319,7 @@ module.exports = {
                     .setDescription(
                         `**Hey <@${discordUserId}>! You don't meet all the free access requirements:**\n\n` +
                         `🎮 **Roblox Account:** ${username} (${userId})\n` +
-                        `✅ **Display Name:** ${displayName} (starts with EOK_)\n` +
+                        `✅ **Display Name:** ${displayName} (starts with EOK)\n` +
                         `❌ **Missing Items:** ${missingItems.join(', ')}\n\n` +
                         `**To get free access, you must:**\n` +
                         `1. ✅ Change your display name to start with "EOK_"\n` +
