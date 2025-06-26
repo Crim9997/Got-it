@@ -5,7 +5,7 @@ const path = require('path');
 const axios = require('axios');
 
 async function getRobloxAvatarThumbnail(userId) {
-    const url = https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=true;
+    const url = `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=true`;
     const response = await axios.get(url);
     return response.data?.data?.[0]?.imageUrl || null;
 }
@@ -33,7 +33,7 @@ class VerificationManager {
                 }
             }
             
-            console.log(✅ Loaded ${loadedCount} active free access verification mappings);
+            console.log(`✅ Loaded ${loadedCount} active free access verification mappings`);
         } catch (error) {
             console.log('📁 Creating new free access verification mapping file');
         }
@@ -113,7 +113,7 @@ class VerificationManager {
     markVerified(discordUserId) {
         if (this.storage.has(discordUserId)) {
             const userData = this.storage.get(discordUserId);
-            console.log(✅ Free Access Verified: Discord ${discordUserId} -> Roblox ${userData.robloxUsername} (${userData.robloxUserId}));
+            console.log(`✅ Free Access Verified: Discord ${discordUserId} -> Roblox ${userData.robloxUsername} (${userData.robloxUserId})`);
             this.storage.delete(discordUserId);
             this.saveToFile();
             return userData;
@@ -133,7 +133,7 @@ class VerificationManager {
         }
         
         if (cleaned > 0) {
-            console.log(🧹 Cleaned ${cleaned} expired free access verification codes);
+            console.log(`🧹 Cleaned ${cleaned} expired free access verification codes`);
             this.saveToFile();
         }
         
@@ -175,7 +175,7 @@ module.exports = {
                 });
             }
 
-            console.log(🔍 Checking free access verification for Discord: ${discordUserId} -> Roblox: ${username} (${userId}));
+            console.log(`🔍 Checking free access verification for Discord: ${discordUserId} -> Roblox: ${username} (${userId})`);
 
  
             let playerInfo;
@@ -194,20 +194,20 @@ module.exports = {
                     .setColor('#ff3c3c') 
                     .setTitle('🚫 Access Denied')
                     .setDescription(
-                        Hey <@${discordUserId}>, you don’t meet the **free access requirements**. Please follow the steps below to proceed:\n\n +
-                        **🔍 Current Status:**\n +
-                        > **Display Name:** \${displayName}\\n +
-                        > ❌ Must start with \EOK_\\n\n +
-                        **✅ How to Get Free Access:**\n +
-                        1️⃣ Change your Roblox **display name** to start with \EOK_\\n +
-                        2️⃣ Wear one of the **required shirts**\n> IDs: \${requiredShirtIds.join(', ')}\\n +
-                        3️⃣ Wear one of the **required pants**\n> IDs: \${requiredPantIds.join(', ')}\\n +
-                        4️⃣ Run this command again\n\n +
-                        💡 *Make sure all requirements are fulfilled before retrying.*
+                        `Hey <@${discordUserId}>, you don’t meet the **free access requirements**. Please follow the steps below to proceed:\n\n` +
+                        `**🔍 Current Status:**\n` +
+                        `> **Display Name:** \`${displayName}\`\n` +
+                        `> ❌ Must start with \`EOK_\`\n\n` +
+                        `**✅ How to Get Free Access:**\n` +
+                        `1️⃣ Change your Roblox **display name** to start with \`EOK_\`\n` +
+                        `2️⃣ Wear one of the **required shirts**\n> IDs: \`${requiredShirtIds.join(', ')}\`\n` +
+                        `3️⃣ Wear one of the **required pants**\n> IDs: \`${requiredPantIds.join(', ')}\`\n` +
+                        `4️⃣ Run this command again\n\n` +
+                        `💡 *Make sure all requirements are fulfilled before retrying.*`
                     )
                     .setThumbnail('https://i.ibb.co/G4QG69r2/devil.webp')
                     .setImage('https://i.ibb.co/mrRHYC1w/roblox-logo-q0l1nrm00k6r29kz.jpg')
-                    .setFooter({ text: Checked Discord ID: ${discordUserId} })
+                    .setFooter({ text: `Checked Discord ID: ${discordUserId}` })
                     .setTimestamp();
             
                 return await interaction.editReply({ embeds: [warningEmbed] });
@@ -223,25 +223,25 @@ module.exports = {
                 isVerified = verificationManager.checkVerification(discordUserId, description);
 
                 if (isVerified) {
-                    console.log(✅ Account verified for Discord user ${discordUserId});
+                    console.log(`✅ Account verified for Discord user ${discordUserId}`);
                     const verifiedData = verificationManager.markVerified(discordUserId);
                 } else {
                     const verifyEmbed = new EmbedBuilder()
                         .setColor('#ff0000')
                         .setTitle('🔐 Account Verification Required')
                         .setDescription(
-                            **Hey <@${discordUserId}>! To verify you own this Roblox account:**\n\n +
-                            1. Go to your [Roblox Profile](https://www.roblox.com/users/${userId}/profile)\n +
-                            2. Click "Edit Profile"\n +
-                            3. Add this code to your **About/Description**:\n +
-                            \\\${verificationData.code}\\\\n +
-                            4. Save your profile\n +
-                            5. Run this command again\n\n +
-                            ⏱️ **Code expires in ${verificationData.timeRemaining} minutes**\n +
-                            ${verificationData.isNewCode ? '🆕 **New code generated**' : '🔄 **Same code as before**'}\n\n +
-                            *You can remove the code after verification is complete.*
+                            `**Hey <@${discordUserId}>! To verify you own this Roblox account:**\n\n` +
+                            `1. Go to your [Roblox Profile](https://www.roblox.com/users/${userId}/profile)\n` +
+                            `2. Click "Edit Profile"\n` +
+                            `3. Add this code to your **About/Description**:\n` +
+                            `\`\`\`${verificationData.code}\`\`\`\n` +
+                            `4. Save your profile\n` +
+                            `5. Run this command again\n\n` +
+                            `⏱️ **Code expires in ${verificationData.timeRemaining} minutes**\n` +
+                            `${verificationData.isNewCode ? '🆕 **New code generated**' : '🔄 **Same code as before**'}\n\n` +
+                            `*You can remove the code after verification is complete.*`
                         )
-                        .setFooter({ text: Mapped to Discord ID: ${discordUserId} })
+                        .setFooter({ text: `Mapped to Discord ID: ${discordUserId}` })
                         .setTimestamp();
 
                     return await interaction.editReply({ embeds: [verifyEmbed] });
@@ -254,7 +254,7 @@ module.exports = {
             }
 
 
-            console.log(🔍 Checking currently wearing items for ${username} (ID: ${userId}));
+            console.log(`🔍 Checking currently wearing items for ${username} (ID: ${userId})`);
 
             let currentlyWearing;
             try {
@@ -266,7 +266,7 @@ module.exports = {
                 });
             }
 
-            console.log(👕 Currently wearing items:, currentlyWearing);
+            console.log(`👕 Currently wearing items:`, currentlyWearing);
 
         
             let hasRequiredShirt = false;
@@ -279,7 +279,7 @@ module.exports = {
                     const assetId = item.assetId || item.id || item.assetID || item.ID;
                     const assetType = item.assetType || item.type;
                     
-                    console.log(👔 Item: ID = ${assetId}, Type = ${assetType});
+                    console.log(`👔 Item: ID = ${assetId}, Type = ${assetType}`);
                     
              
                     if ((assetType === 'Shirt' || assetType === 11)) {
@@ -287,7 +287,7 @@ module.exports = {
                             if (assetId === shirtId || assetId == shirtId || Number(assetId) === Number(shirtId)) {
                                 hasRequiredShirt = true;
                                 foundShirtId = assetId;
-                                console.log(✅ Required shirt found: ${assetId});
+                                console.log(`✅ Required shirt found: ${assetId}`);
                                 break;
                             }
                         }
@@ -299,7 +299,7 @@ module.exports = {
                             if (assetId === pantId || assetId == pantId || Number(assetId) === Number(pantId)) {
                                 hasRequiredPants = true;
                                 foundPantId = assetId;
-                                console.log(✅ Required pants found: ${assetId});
+                                console.log(`✅ Required pants found: ${assetId}`);
                                 break;
                             }
                         }
@@ -310,27 +310,27 @@ module.exports = {
         
             if (!hasRequiredShirt || !hasRequiredPants) {
                 const missingItems = [];
-                if (!hasRequiredShirt) missingItems.push(👕 Any required shirt (IDs: ${requiredShirtIds.join(', ')}));
-                if (!hasRequiredPants) missingItems.push(👖 Any required pants (IDs: ${requiredPantIds.join(', ')}));
+                if (!hasRequiredShirt) missingItems.push(`👕 Any required shirt (IDs: ${requiredShirtIds.join(', ')})`);
+                if (!hasRequiredPants) missingItems.push(`👖 Any required pants (IDs: ${requiredPantIds.join(', ')})`);
 
                 const warningEmbed = new EmbedBuilder()
                     .setColor('#ff0000')
                     .setTitle('❌ Requirements Not Met')
                     .setDescription(
-                        **Hey <@${discordUserId}>! You don't meet all the free access requirements:**\n\n +
-                        🎮 **Roblox Account:** ${username} (${userId})\n +
-                        ✅ **Display Name:** ${displayName} (starts with EOK_)\n +
-                        ❌ **Missing Items:** ${missingItems.join(', ')}\n\n +
-                        **To get free access, you must:**\n +
-                        1. ✅ Change your display name to start with "EOK_"\n +
-                        2. ${hasRequiredShirt ? '✅' : '❌'} Wear any required shirt (IDs: ${requiredShirtIds.join(', ')})\n +
-                        3. ${hasRequiredPants ? '✅' : '❌'} Wear any required pants (IDs: ${requiredPantIds.join(', ')})\n +
-                        4. Run this command again\n\n +
-                        *Please complete all requirements and try again.*
+                        `**Hey <@${discordUserId}>! You don't meet all the free access requirements:**\n\n` +
+                        `🎮 **Roblox Account:** ${username} (${userId})\n` +
+                        `✅ **Display Name:** ${displayName} (starts with EOK_)\n` +
+                        `❌ **Missing Items:** ${missingItems.join(', ')}\n\n` +
+                        `**To get free access, you must:**\n` +
+                        `1. ✅ Change your display name to start with "EOK_"\n` +
+                        `2. ${hasRequiredShirt ? '✅' : '❌'} Wear any required shirt (IDs: ${requiredShirtIds.join(', ')})\n` +
+                        `3. ${hasRequiredPants ? '✅' : '❌'} Wear any required pants (IDs: ${requiredPantIds.join(', ')})\n` +
+                        `4. Run this command again\n\n` +
+                        `*Please complete all requirements and try again.*`
                     )
                     .setThumbnail('https://i.ibb.co/G4QG69r2/devil.webp')
                     .setImage('https://i.ibb.co/mrRHYC1w/roblox-logo-q0l1nrm00k6r29kz.jpg')
-                    .setFooter({ text: Checked for Discord ID: ${discordUserId} })
+                    .setFooter({ text: `Checked for Discord ID: ${discordUserId}` })
                     .setTimestamp();
 
                 return await interaction.editReply({ embeds: [warningEmbed] });
@@ -348,13 +348,13 @@ module.exports = {
 
             if (member.roles.cache.has(roleId)) {
                 return await interaction.editReply({
-                    content: ✅ You already have the **${role.name}** role!,
+                    content: `✅ You already have the **${role.name}** role!`,
                 });
             }
 
     
             await member.roles.add(role);
-            console.log(✅ Gave free access role ${role.name} to Discord user ${discordUserId});
+            console.log(`✅ Gave free access role ${role.name} to Discord user ${discordUserId}`);
 
         
             let robloxRankResult = '';
@@ -365,11 +365,11 @@ module.exports = {
                     
                     if (userId === botUserId) {
                         robloxRankResult = '\n🤖 **Bot account detected - Discord role given!**';
-                        console.log(ℹ️ Skipped ranking for bot account ${username});
+                        console.log(`ℹ️ Skipped ranking for bot account ${username}`);
                     } else {
                         await noblox.setRank(groupId, userId, robloxRankId);
                         robloxRankResult = '\n🎯 **Roblox rank updated successfully!**';
-                        console.log(✅ Updated Roblox rank for ${username} to ${robloxRankId});
+                        console.log(`✅ Updated Roblox rank for ${username} to ${robloxRankId}`);
                     }
                 }
             } catch (rankError) {
@@ -382,15 +382,15 @@ module.exports = {
                 .setColor('#00ff00')
                 .setTitle('✅ Free Access Granted!')
                 .setDescription(
-                    **Welcome to free access, ${username}!**\n\n +
-                    👤 **Discord:** <@${discordUserId}>\n +
-                    🎮 **Roblox:** ${username} (${userId})\n +
-                    🎭 **Display Name:** ${displayName}\n +
-                    🎭 **Discord Role:** ${role.name}\n +
-                    👕 **Shirt Verified:** ✅ (ID: ${foundShirtId})\n +
-                    👖 **Pants Verified:** ✅ (ID: ${foundPantId})\n +
-                    🔐 **Account Verified:** ✅${robloxRankResult}\n\n +
-                    *You can now remove the verification code from your Roblox profile.*
+                    `**Welcome to free access, ${username}!**\n\n` +
+                    `👤 **Discord:** <@${discordUserId}>\n` +
+                    `🎮 **Roblox:** ${username} (${userId})\n` +
+                    `🎭 **Display Name:** ${displayName}\n` +
+                    `🎭 **Discord Role:** ${role.name}\n` +
+                    `👕 **Shirt Verified:** ✅ (ID: ${foundShirtId})\n` +
+                    `👖 **Pants Verified:** ✅ (ID: ${foundPantId})\n` +
+                    `🔐 **Account Verified:** ✅${robloxRankResult}\n\n` +
+                    `*You can now remove the verification code from your Roblox profile.*`
                 )
                 .setThumbnail('https://i.ibb.co/G4QG69r2/devil.webp')
                 .setImage('https://i.ibb.co/mrRHYC1w/roblox-logo-q0l1nrm00k6r29kz.jpg')
@@ -406,7 +406,7 @@ module.exports = {
         } catch (error) {
             console.error('❌ Free access command error:', error);
             await interaction.editReply({
-                content: ❌ An error occurred while processing your request for **${username}**. Please try again later.\n\n*If this continues, contact an administrator.*,
+                content: `❌ An error occurred while processing your request for **${username}**. Please try again later.\n\n*If this continues, contact an administrator.*`,
             });
         }
     },
