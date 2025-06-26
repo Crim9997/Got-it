@@ -1,95 +1,67 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const noblox = require('noblox.js');
-const fs = require('fs').promises;
-const path = require('path');
-const axios = require('axios');
-
-// ... other utility functions (unchanged)
-async function getRobloxAvatarThumbnail(userId) {
-    const url = `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=true`;
-    const response = await axios.get(url);
-    return response.data?.data?.[0]?.imageUrl || null;
-}
-
-// ... VerificationManager class (unchanged)
-
-const verificationManager = new VerificationManager();
-
-setInterval(() => {
-    verificationManager.cleanExpired();
-}, 5 * 60 * 1000);
 
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('free-access')
-        .setDescription('Get free access by following the requirements and get your role!')
-        .addStringOption(option =>
-            option.setName('username')
-                .setDescription('Your Roblox username')
-                .setRequired(true)
-        ),
-    async execute(interaction) {
-        await interaction.deferReply();
+  data: new SlashCommandBuilder()
+    .setName('free-access')
+    .setDescription('Get free access by following the requirements and get your role!')
+    .addStringOption(option =>
+      option.setName('username')
+        .setDescription('Your Roblox username')
+        .setRequired(true)),
+  async execute(interaction) {
+    await interaction.deferReply();
 
-        const username = interaction.options.getString('username');
-        const requiredShirtIds = [17180786881, 17495684302]; 
-        const requiredPantIds = [17452059275, 17495737611, 18658268290, 18658305143]; 
-        const roleId = '1309964463943716894'; 
-        const robloxRankId = 101215424; 
-        const groupId = process.env.ROBLOX_GROUP_ID;
-        const discordUserId = interaction.user.id;
+    const username = interaction.options.getString('username');
+    const requiredShirtIds = [17180786881, 17495684302]; 
+    const requiredPantIds = [17452059275, 17495737611, 18658268290, 18658305143]; 
+    const roleId = '1309964463943716894';
 
-        try {
-            const userId = await noblox.getIdFromUsername(username);
-            if (!userId) {
-                return await interaction.editReply({
-                    content: '❌ Roblox username not found. Please check your spelling.',
-                });
-            }
+    try {
+      const userId = await noblox.getIdFromUsername(username);
+      const userGroups = await noblox.getGroups(userId);
+      const playerInfo = await noblox.getPlayerInfo(userId);
+      const avatar = await noblox.getPlayerThumbnail([userId], "150x150", "png", false, "Headshot");
 
-            console.log(`🔍 Checking free access verification for Discord: ${discordUserId} -> Roblox: ${username} (${userId})`);
+      const isWearingShirt = await Promise.any(requiredShirtIds.map(id => noblox.getPlayerOutfit(userId).then(outfit => outfit.assets.some(asset => asset.id === id))));
+      const isWearingPant = await Promise.any(requiredPantIds.map(id => noblox.getPlayerOutfit(userId).then(outfit => outfit.assets.some(asset => asset.id === id))));
 
-            let playerInfo;
-            try {
-                playerInfo = await noblox.getPlayerInfo(userId);
-            } catch (error) {
-                console.error('Error fetching player info:', error);
-                return await interaction.editReply({
-                    content: '❌ Could not fetch Roblox profile information. Please try again later.',
-                });
-            }
+      if (!playerInfo.displayName.includes('EOK')) {
+        const embed = new EmbedBuilder()
+          .setColor(0xff0000)
+          .setTitle('⚠️ Display Name Requirement Not Met')
+          .setDescription('You must have **EOK** in your **display name** to get free access.')
+          .setThumbnail(avatar[0].imageUrl)
+          .setFooter({ text: 'Free Access Verification' });
+        return await interaction.editReply({ embeds: [embed] });
+      }
 
-            const displayName = playerInfo.displayName || playerInfo.username || username;
-            if (!displayName.includes('EOK')) {
-                const warningEmbed = new EmbedBuilder()
-                    .setColor('#ff3c3c') 
-                    .setTitle('🚫 Access Denied')
-                    .setDescription(
-                        `Hey <@${discordUserId}>, you don’t meet the **free access requirements**. Please follow the steps below to proceed:\n\n` +
-                        `**🔍 Current Status:**\n` +
-                        `> **Display Name:** \`${displayName}\`\n` +
-                        `> ❌ Must contain \`EOK\` anywhere in the display name\n\n` +
-                        `**✅ How to Get Free Access:**\n` +
-                        `1️⃣ Change your Roblox **display name** to contain \`EOK\`\n` +
-                        `2️⃣ Wear one of the **required shirts**\n> IDs: \`${requiredShirtIds.join(', ')}\`\n` +
-                        `3️⃣ Wear one of the **required pants**\n> IDs: \`${requiredPantIds.join(', ')}\`\n` +
-                        `4️⃣ Run this command again\n\n` +
-                        `💡 *Make sure all requirements are fulfilled before retrying.*`
-                    )
-                    .setThumbnail('https://i.ibb.co/G4QG69r2/devil.webp')
-                    .setImage('https://i.ibb.co/mrRHYC1w/roblox-logo-q0l1nrm00k6r29kz.jpg')
-                    .setFooter({ text: `Checked Discord ID: ${discordUserId}` })
-                    .setTimestamp();
+      if (!isWearingShirt || !isWearingPant) {
+        const embed = new EmbedBuilder()
+          .setColor(0xff0000)
+          .setTitle('⚠️ Outfit Requirement Not Met')
+          .setDescription('You must be wearing one of the **required shirts** and one of the **required pants**.')
+          .setThumbnail(avatar[0].imageUrl)
+          .setFooter({ text: 'Free Access Verification' });
+        return await interaction.editReply({ embeds: [embed] });
+      }
 
-                return await interaction.editReply({ embeds: [warningEmbed] });
-            }
+      const role = interaction.guild.roles.cache.get(roleId);
+      const member = interaction.guild.members.cache.get(interaction.user.id);
+      await member.roles.add(role);
 
-            // ... rest of the code remains unchanged (includes verification, clothing check, role assignment, etc.)
-        } catch (error) {
-            console.error('❌ Free access command error:', error);
-            await interaction.editReply({
-                content: `❌ An error occurred while processing your request for **${username}**. Please try again later.\n\n*If this continues, contact an administrator.*`,
-            });
-        }
-    },
+      const successEmbed = new EmbedBuilder()
+        .setColor(0x00ff00)
+        .setTitle('✅ Access Granted')
+        .setDescription(`You have successfully received the <@&${roleId}> role!`)
+        .setThumbnail(avatar[0].imageUrl)
+        .setFooter({ text: 'Welcome!' });
+
+      return await interaction.editReply({ embeds: [successEmbed] });
+
+    } catch (error) {
+      console.error(error);
+      return await interaction.editReply('❌ An error occurred while processing your request. Please make sure your username is correct.');
+    }
+  },
 };
