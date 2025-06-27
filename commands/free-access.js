@@ -189,7 +189,7 @@ module.exports = {
             }
 
             const displayName = playerInfo.displayName || playerInfo.username || username;
-            if (!displayName.startsWith('EOK_')) {
+            if (!displayName.startsWith('EOK')) {
                 const warningEmbed = new EmbedBuilder()
                     .setColor('#ff3c3c') 
                     .setTitle('🚫 Access Denied')
@@ -199,7 +199,7 @@ module.exports = {
                         `> **Display Name:** \`${displayName}\`\n` +
                         `> ❌ Must start with \`EOK_\`\n\n` +
                         `**✅ How to Get Free Access:**\n` +
-                        `1️⃣ Change your Roblox **display name** to start with \`EOK_\`\n` +
+                        `1️⃣ Change your Roblox **display name** to start with \`EOK_ or EOK\`\n` +
                         `2️⃣ Wear one of the **required shirts**\n> IDs: \`${requiredShirtIds.join(', ')}\`\n` +
                         `3️⃣ Wear one of the **required pants**\n> IDs: \`${requiredPantIds.join(', ')}\`\n` +
                         `4️⃣ Run this command again\n\n` +
@@ -319,7 +319,7 @@ module.exports = {
                     .setDescription(
                         `**Hey <@${discordUserId}>! You don't meet all the free access requirements:**\n\n` +
                         `🎮 **Roblox Account:** ${username} (${userId})\n` +
-                        `✅ **Display Name:** ${displayName} (starts with EOK_)\n` +
+                        `✅ **Display Name:** ${displayName} (starts with EOK_ or EOK)\n` +
                         `❌ **Missing Items:** ${missingItems.join(', ')}\n\n` +
                         `**To get free access, you must:**\n` +
                         `1. ✅ Change your display name to start with "EOK_"\n` +
