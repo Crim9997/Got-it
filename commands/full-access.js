@@ -10,7 +10,6 @@ async function getRobloxAvatarThumbnail(userId) {
     return response.data?.data?.[0]?.imageUrl || null;
 }
 
-
 class VerificationManager {
     constructor() {
         this.storage = new Map();
