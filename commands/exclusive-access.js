@@ -224,7 +224,7 @@ module.exports = {
                             `*You can remove the code after verification is complete.*`
                         )
                         .setThumbnail('https://i.ibb.co/G4QG69r2/devil.webp')
-                        .setImage('https://i.ibb.co/mrRHYC1w/roblox-logo-q0l1nrm00k6r29kz.jpg')
+                        .setImage('https://cdn.discordapp.com/attachments/1309951566953975828/1388452088236871771/ca105410be2d80cc00c1ab2393ab063b.png?ex=68610846&is=685fb6c6&hm=228ca9d5195deddc56f0ecb34162fff529c1fe08cf7e2121e43f583df5248c59&')
                         .setFooter({ text: `Mapped to Discord ID: ${discordUserId}` })
                         .setTimestamp();
 
