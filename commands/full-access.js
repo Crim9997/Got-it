@@ -225,7 +225,7 @@ module.exports = {
                             `${verificationData.isNewCode ? '🆕 **New code generated**' : '🔄 **Same code as before**'}\n\n` +
                             `*You can remove the code after verification is complete.*`
                         )
-                        .setThumbnail('https://i.ibb.co/G4QG69r2/devil.webp')
+                        .setThumbnail('https://cdn.discordapp.com/attachments/1381986089648259113/1388460493840056350/4a970f9bf6124bafab70138bad4d284a.png?ex=6861101a&is=685fbe9a&hm=10bc92a6e97465eecdef189b4276edc57bf54c1ca314f964daa8ed2b173b595e&')
                         .setImage('https://cdn.discordapp.com/attachments/1309951566953975828/1388452088236871771/ca105410be2d80cc00c1ab2393ab063b.png?ex=68610846&is=685fb6c6&hm=228ca9d5195deddc56f0ecb34162fff529c1fe08cf7e2121e43f583df5248c59&')
                         .setFooter({ text: `Mapped to Discord ID: ${discordUserId}` })
                         .setTimestamp();
