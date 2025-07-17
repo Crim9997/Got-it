@@ -205,8 +205,8 @@ module.exports = {
                         `4️⃣ Run this command again\n\n` +
                         `💡 *Make sure all requirements are fulfilled before retrying.*`
                     )
-                    .setThumbnail('https://i.ibb.co/G4QG69r2/devil.webp')
-                    .setImage('https://cdn.discordapp.com/attachments/1309951566953975828/1388452088236871771/ca105410be2d80cc00c1ab2393ab063b.png?ex=68610846&is=685fb6c6&hm=228ca9d5195deddc56f0ecb34162fff529c1fe08cf7e2121e43f583df5248c59&')
+                    .setThumbnail('https://cdn.discordapp.com/attachments/1309951566953975828/1388461231010222142/image0.jpg?ex=687a1d49&is=6878cbc9&hm=bf366a320c9eea57520a3274abc1abf7da699795e79f2bf3547990f038e27972&')
+                    .setImage('https://cdn.discordapp.com/attachments/1309951566953975828/1388452088236871771/ca105410be2d80cc00c1ab2393ab063b.png?ex=687a14c6&is=6878c346&hm=9fc65c66f62668c0c1402e272e7a1f0e2575d549500ee6fed2af53c84cda17f9&')
                     .setFooter({ text: `Checked Discord ID: ${discordUserId}` })
                     .setTimestamp();
             
